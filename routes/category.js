@@ -4,7 +4,7 @@ const db = require("../config/db");
 
 async function getNextId() {
   const [rows] = await db.query("SELECT MAX(id) as maxId FROM category");
-  return rows[0].maxId ? rows[0].maxId + 1 : 100;
+  return rows[0].maxId ? rows[0].maxId + 1 : 1;
 }
 // READ ALL
 router.get("/", async (req, res) => {

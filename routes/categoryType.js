@@ -4,7 +4,7 @@ const pool = require("../config/db");
 // Helper: Get next id starting from 100
 async function getNextId() {
   const [rows] = await pool.query("SELECT MAX(id) as maxId FROM categoryType");
-  return rows[0].maxId ? Math.max(100, rows[0].maxId + 1) : 100;
+  return rows[0].maxId ? Math.max(1, rows[0].maxId + 1) : 1;
 }
 
 // Helper: Check if categoryId exists
