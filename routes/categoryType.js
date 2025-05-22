@@ -63,7 +63,19 @@ router.post("/", async (req, res) => {
         isUpdated,
       ]
     );
-    res.status(201).json({ id });
+    return res.status(201).json({
+      message: "categoryType added",
+      data: {
+        id,
+        categoryId,
+        name,
+        description,
+        isActive,
+        userId,
+        isCreated,
+        isUpdated,
+      },
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -77,6 +89,7 @@ router.put("/:id", async (req, res) => {
     if (categoryId && !(await categoryIdExists(categoryId))) {
       return res.status(400).json({ error: "Invalid categoryId" });
     }
+
     const [result] = await pool.query(
       `UPDATE categoryType SET categoryId=?, name=?, description=?, isActive=?, userId=?, isUpdated=?
              WHERE id=?`,
