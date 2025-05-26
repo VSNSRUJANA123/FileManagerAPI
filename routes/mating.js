@@ -1,22 +1,3 @@
-// matingID;
-// species;
-// tatoo;
-// maleChipID;
-// femaleChipID;
-// entryDate;
-// exitDate;
-// BD;
-// LD;
-// W;
-// isHeatedDetectedANDNotMated;
-// MatingconfirmedDate;
-// EsitmatedDate;
-// RealBirthDate;
-// otherproblemenss;
-// userId;
-// isCreated;
-// isUpdated
-
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
@@ -44,10 +25,14 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-// CREATE
+async function getNextMatingId() {
+  const [rows] = await db.query("SELECT MAX(matingID) AS maxId FROM mating");
+  let next = rows[0].maxId ? BigInt(rows[0].maxId) + 1n : 1000000000000000n;
+  return next.toString().padStart(16, "0"); // still a string with leading zeros
+}
 router.post("/", async (req, res) => {
   try {
-    const {
+    let {
       matingID,
       species,
       tatoo,
@@ -58,7 +43,7 @@ router.post("/", async (req, res) => {
       BD,
       LD,
       W,
-      otherproblemenss,
+      otherproblmenss,
       isHeatedDetectedANDNotMated,
       MatingconfirmedDate,
       EsitmatedDate,
@@ -66,10 +51,10 @@ router.post("/", async (req, res) => {
       countconfdatees,
       userId,
     } = req.body;
-
+    matingID = await getNextMatingId();
     const [result] = await db.execute(
       `INSERT INTO mating (
-                matingID, species, tatoo, maleChipID, femaleChipID, entryDate, exitDate, BD, LD, W, otherproblemenss,
+                matingID, species, tatoo, maleChipID, femaleChipID, entryDate, exitDate, BD, LD, W, otherproblmenss,
                 isHeatedDetectedANDNotMated, MatingconfirmedDate, EsitmatedDate, RealBirthDate, countconfdatees, userId,
                 createdDate, updatedDate
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
@@ -84,7 +69,7 @@ router.post("/", async (req, res) => {
         BD,
         LD,
         W,
-        otherproblemenss,
+        otherproblmenss,
         isHeatedDetectedANDNotMated,
         MatingconfirmedDate,
         EsitmatedDate,
@@ -93,7 +78,28 @@ router.post("/", async (req, res) => {
         userId,
       ]
     );
-    res.json({ id: result.insertId });
+    res.json({
+      message: "mating added",
+      data: {
+        matingID,
+        species,
+        tatoo,
+        maleChipID,
+        femaleChipID,
+        entryDate,
+        exitDate,
+        BD,
+        LD,
+        W,
+        otherproblmenss,
+        isHeatedDetectedANDNotMated,
+        MatingconfirmedDate,
+        EsitmatedDate,
+        RealBirthDate,
+        countconfdatees,
+        userId,
+      },
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -112,7 +118,7 @@ router.put("/:id", async (req, res) => {
       BD,
       LD,
       W,
-      otherproblemenss,
+      otherproblmenss,
       isHeatedDetectedANDNotMated,
       MatingconfirmedDate,
       EsitmatedDate,
@@ -123,7 +129,7 @@ router.put("/:id", async (req, res) => {
 
     const [result] = await db.execute(
       `UPDATE mating SET
-                species=?, tatoo=?, maleChipID=?, femaleChipID=?, entryDate=?, exitDate=?, BD=?, LD=?, W=?, otherproblemenss=?,
+                species=?, tatoo=?, maleChipID=?, femaleChipID=?, entryDate=?, exitDate=?, BD=?, LD=?, W=?, otherproblmenss=?,
                 isHeatedDetectedANDNotMated=?, MatingconfirmedDate=?, EsitmatedDate=?, RealBirthDate=?, countconfdatees=?, userId=?,
                 updatedDate=NOW()
             WHERE matingID=?`,
@@ -137,7 +143,7 @@ router.put("/:id", async (req, res) => {
         BD,
         LD,
         W,
-        otherproblemenss,
+        otherproblmenss,
         isHeatedDetectedANDNotMated,
         MatingconfirmedDate,
         EsitmatedDate,
