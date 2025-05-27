@@ -12,6 +12,7 @@ app.use("/category", require("./routes/category.js"));
 app.use("/categoryType", require("./routes/categoryType.js"));
 app.use("/animal", require("./routes/animal.js"));
 app.use("/mating", require("./routes/mating.js"));
+app.use("/FemaleandMaleT", require("./routes/femaleandmaleT.js"));
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
