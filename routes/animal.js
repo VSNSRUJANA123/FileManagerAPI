@@ -66,6 +66,10 @@ router.post("/", async (req, res) => {
       others,
       isActive,
       userId,
+      matingID,
+      LD,
+      W,
+      BD,
     } = req.body;
     // Check foreign keys
     const animalID = await getNextMatingId();
@@ -84,8 +88,8 @@ router.post("/", async (req, res) => {
       animalID,
                 species, category, location, chip, tatoo, motherclip, fatherclip,
                 weight, sex, birthDate, label, offeredTo, rereservedFor, others,
-                isActive, userId, isCreated, isUpdated
-            ) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
+                isActive, userId, isCreated, isUpdated, matingID,LD,W,BD,
+            ) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(),?,?,?,?)`,
       [
         animalID,
         species,
@@ -104,6 +108,10 @@ router.post("/", async (req, res) => {
         others,
         isActive,
         userId,
+        matingID,
+        LD,
+        W,
+        BD,
       ]
     );
     res.status(201).json({
@@ -153,6 +161,10 @@ router.put("/:id", async (req, res) => {
       others,
       isActive,
       userId,
+      matingID,
+      LD,
+      W,
+      BD,
     } = req.body;
 
     // Check foreign keys if provided
@@ -170,7 +182,10 @@ router.put("/:id", async (req, res) => {
       `UPDATE animal SET
                 species = ?, category = ?, location = ?, chip = ?, tatoo = ?, motherclip = ?, fatherclip = ?,
                 weight = ?, sex = ?, birthDate = ?, label = ?, offeredTo = ?, rereservedFor = ?, others = ?,
-                isActive = ?, userId = ?, isUpdated = NOW()
+                isActive = ?, userId = ?, isUpdated = NOW(), matingID=?,
+      LD=?,
+      W=?,
+      BD=?,
             WHERE animalID = ?`,
       [
         species,
@@ -189,6 +204,10 @@ router.put("/:id", async (req, res) => {
         others,
         isActive,
         userId,
+        matingID,
+        LD,
+        W,
+        BD,
         req.params.id,
       ]
     );
