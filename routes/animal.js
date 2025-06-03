@@ -10,7 +10,7 @@ async function checkCategoryIdExists(id) {
 }
 
 async function getNextMatingId() {
-  const [rows] = await db.query("SELECT MAX(matingID) AS maxId FROM mating");
+  const [rows] = await pool.query("SELECT MAX(matingID) AS maxId FROM mating");
 
   let next;
   if (!rows[0].maxId) {
@@ -106,7 +106,28 @@ router.post("/", async (req, res) => {
         userId,
       ]
     );
-    res.status(201).json({ animalID: result.insertId });
+    res.status(201).json({
+      message: "Animal created",
+      data: {
+        animalID,
+        species,
+        category,
+        location,
+        chip,
+        tatoo,
+        motherclip,
+        fatherclip,
+        weight,
+        sex,
+        birthDate,
+        label,
+        offeredTo,
+        rereservedFor,
+        others,
+        isActive,
+        userId,
+      },
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -173,7 +194,7 @@ router.put("/:id", async (req, res) => {
     );
     if (result.affectedRows === 0)
       return res.status(404).json({ error: "Animal not found" });
-    res.json({ message: "Animal updated" });
+    res.json({ message: "Animal Updated" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
