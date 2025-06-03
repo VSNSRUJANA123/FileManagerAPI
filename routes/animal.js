@@ -8,6 +8,20 @@ async function checkCategoryIdExists(id) {
   ]);
   return rows.length > 0;
 }
+
+async function getNextMatingId() {
+  const [rows] = await db.query("SELECT MAX(matingID) AS maxId FROM mating");
+
+  let next;
+  if (!rows[0].maxId) {
+    next = "0000100000000000";
+  } else {
+    // Convert string to BigInt for safe increment
+    next = (BigInt(rows[0].maxId) + 1n).toString().padStart(16, "0");
+  }
+
+  return next;
+}
 // READ ALL
 router.get("/", async (req, res) => {
   try {
@@ -36,7 +50,6 @@ router.get("/:id", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const {
-      animalID,
       species,
       category,
       location,
@@ -55,6 +68,7 @@ router.post("/", async (req, res) => {
       userId,
     } = req.body;
     // Check foreign keys
+    const animalID = await getNextMatingId();
     if (
       !(await checkCategoryIdExists(species)) ||
       !(await checkCategoryIdExists(category)) ||
