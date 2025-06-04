@@ -63,14 +63,14 @@ router.post("/", async (req, res) => {
     matingID = await getNextMatingId();
     const [result] = await db.execute(
       `INSERT INTO mating (
-                matingID, species, tatoo, maleChipID, femaleChipID, entryDate, exitDate, BD, LD, W, otherproblmenss,
+                matingID, species, maleTatoo, maleChipID, femaleChipID, entryDate, exitDate, BD, LD, W, otherproblmenss,
                 isHeatedDetectedANDNotMated, MatingconfirmedDate, EsitmatedDate, RealBirthDate, countconfdatees, userId,
                 createdDate, updatedDate
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())`,
       [
         matingID,
         species,
-        tatoo,
+        maleTatoo,
         maleChipID,
         femaleChipID,
         entryDate,
@@ -92,7 +92,7 @@ router.post("/", async (req, res) => {
       data: {
         matingID,
         species,
-        tatoo,
+        maleTatoo,
         maleChipID,
         femaleChipID,
         entryDate,
@@ -119,7 +119,7 @@ router.put("/:id", async (req, res) => {
   try {
     const {
       species,
-      tatoo,
+      maleTatoo,
       maleChipID,
       femaleChipID,
       entryDate,
@@ -138,13 +138,13 @@ router.put("/:id", async (req, res) => {
 
     const [result] = await db.execute(
       `UPDATE mating SET
-                species=?, tatoo=?, maleChipID=?, femaleChipID=?, entryDate=?, exitDate=?, BD=?, LD=?, W=?, otherproblmenss=?,
+                species=?, maleTatoo=?, maleChipID=?, femaleChipID=?, entryDate=?, exitDate=?, BD=?, LD=?, W=?, otherproblmenss=?,
                 isHeatedDetectedANDNotMated=?, MatingconfirmedDate=?, EsitmatedDate=?, RealBirthDate=?, countconfdatees=?, userId=?,
                 updatedDate=NOW()
             WHERE matingID=?`,
       [
         species,
-        tatoo,
+        maleTatoo,
         maleChipID,
         femaleChipID,
         entryDate,
