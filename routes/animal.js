@@ -8,20 +8,19 @@ async function checkCategoryIdExists(id) {
   ]);
   return rows.length > 0;
 }
-
-async function getNextMatingId() {
-  const [rows] = await pool.query("SELECT MAX(matingID) AS maxId FROM mating");
+async function getNextAnimalId() {
+  const [rows] = await pool.query("SELECT MAX(animalID) AS maxId FROM animal");
 
   let next;
   if (!rows[0].maxId) {
     next = "0000100000000000";
   } else {
-    // Convert string to BigInt for safe increment
     next = (BigInt(rows[0].maxId) + 1n).toString().padStart(16, "0");
   }
 
   return next;
 }
+
 // READ ALL
 router.get("/", async (req, res) => {
   try {
@@ -72,7 +71,7 @@ router.post("/", async (req, res) => {
       BD,
     } = req.body;
     // Check foreign keys
-    const animalID = await getNextMatingId();
+    const animalID = await getNextAnimalId();
     if (
       !(await checkCategoryIdExists(species)) ||
       !(await checkCategoryIdExists(category)) ||
@@ -88,7 +87,7 @@ router.post("/", async (req, res) => {
       animalID,
                 species, category, location, chip, tatoo, motherclip, fatherclip,
                 weight, sex, birthDate, label, offeredTo, rereservedFor, others,
-                isActive, userId, isCreated, isUpdated, matingID,LD,W,BD,
+                isActive, userId, isCreated, isUpdated, matingID,LD,W,BD
             ) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(),?,?,?,?)`,
       [
         animalID,
@@ -185,7 +184,7 @@ router.put("/:id", async (req, res) => {
                 isActive = ?, userId = ?, isUpdated = NOW(), matingID=?,
       LD=?,
       W=?,
-      BD=?,
+      BD=?
             WHERE animalID = ?`,
       [
         species,
