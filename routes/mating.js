@@ -71,8 +71,8 @@ router.post("/", async (req, res) => {
       `INSERT INTO mating (
                 matingID, species, maleTatoo, maleChipID, femaleChipID, entryDate, exitDate, BD, LD, W, otherproblmenss,
                 isHeatedDetectedANDNotMated, MatingconfirmedDate1, EsitmatedDate, RealBirthDate, countconfdatees, userId,
-                createdDate, updatedDate,MatingconfirmedDate2, MatingconfirmedDate3,femaleTatoo,pregencyMethod,confirmedPergency,
-      ,pregencyConfirmedDate
+                createdDate, updatedDate,MatingconfirmedDate2, MatingconfirmedDate3,femaleTatoo,
+                pregencyMethod,confirmedPergency,pregencyConfirmedDate
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(),?,?,?,?,?,?)`,
       [
         matingID,
