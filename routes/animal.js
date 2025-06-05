@@ -66,9 +66,7 @@ router.post("/", async (req, res) => {
       isActive,
       userId,
       matingID,
-      LD,
-      W,
-      BD,
+      status,
     } = req.body;
     // Check foreign keys
     const animalID = await getNextAnimalId();
@@ -87,8 +85,8 @@ router.post("/", async (req, res) => {
       animalID,
                 species, category, location, chip, tatoo, motherclip, fatherclip,
                 weight, sex, birthDate, label, offeredTo, rereservedFor, others,
-                isActive, userId, isCreated, isUpdated, matingID,LD,W,BD
-            ) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(),?,?,?,?)`,
+                isActive, userId, isCreated, isUpdated, matingID,status
+            ) VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(),?,?)`,
       [
         animalID,
         species,
@@ -108,9 +106,7 @@ router.post("/", async (req, res) => {
         isActive,
         userId,
         matingID,
-        LD,
-        W,
-        BD,
+        status,
       ]
     );
     res.status(201).json({
@@ -133,6 +129,7 @@ router.post("/", async (req, res) => {
         others,
         isActive,
         userId,
+        status,
       },
     });
   } catch (err) {
@@ -161,9 +158,7 @@ router.put("/:id", async (req, res) => {
       isActive,
       userId,
       matingID,
-      LD,
-      W,
-      BD,
+      status,
     } = req.body;
 
     // Check foreign keys if provided
@@ -182,9 +177,7 @@ router.put("/:id", async (req, res) => {
                 species = ?, category = ?, location = ?, chip = ?, tatoo = ?, motherclip = ?, fatherclip = ?,
                 weight = ?, sex = ?, birthDate = ?, label = ?, offeredTo = ?, rereservedFor = ?, others = ?,
                 isActive = ?, userId = ?, isUpdated = NOW(), matingID=?,
-      LD=?,
-      W=?,
-      BD=?
+     status=?
             WHERE animalID = ?`,
       [
         species,
@@ -204,9 +197,7 @@ router.put("/:id", async (req, res) => {
         isActive,
         userId,
         matingID,
-        LD,
-        W,
-        BD,
+        status,
         req.params.id,
       ]
     );
