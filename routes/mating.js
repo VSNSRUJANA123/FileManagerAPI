@@ -13,10 +13,6 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-// "ACategroy": null,
-//     "matingcol": null,
-//     "PregnancyPreventativeTreatmentDate": null,
-//     "matingcol1": null
 
 // READ ONE
 router.get("/:id", async (req, res) => {
@@ -58,7 +54,6 @@ router.post("/", async (req, res) => {
       BD,
       LD,
       W,
-      otherproblmenss,
       isHeatedDetectedANDNotMated,
       MatingconfirmedDate1,
       EsitmatedDate,
@@ -71,15 +66,20 @@ router.post("/", async (req, res) => {
       pregencyMethod,
       confirmedPergency,
       pregencyConfirmedDate,
+      ACategroy,
+      matingcol,
+      PregnancyPreventativeTreatmentDate,
+      matingcol1,
     } = req.body;
+
     matingID = await getNextMatingId();
     const [result] = await db.execute(
       `INSERT INTO mating (
-                matingID, species, maleTatoo, maleChipID, femaleChipID, entryDate, exitDate, BD, LD, W, otherproblmenss,
+                matingID, species, maleTatoo, maleChipID, femaleChipID, entryDate, exitDate, BD, LD, W,
                 isHeatedDetectedANDNotMated, MatingconfirmedDate1, EsitmatedDate, RealBirthDate, countconfdatees, userId,
                 createdDate, updatedDate,MatingconfirmedDate2, MatingconfirmedDate3,femaleTatoo,
-                pregencyMethod,confirmedPergency,pregencyConfirmedDate
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(),?,?,?,?,?,?)`,
+                pregencyMethod,confirmedPergency,pregencyConfirmedDate, ACategroy,matingcol,PregnancyPreventativeTreatmentDate,matingcol1
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW(),?,?,?,?,?,?,?,?,?,?)`,
       [
         matingID,
         species ?? null,
@@ -91,7 +91,6 @@ router.post("/", async (req, res) => {
         BD ?? null,
         LD ?? null,
         W ?? null,
-        otherproblmenss ?? "",
         isHeatedDetectedANDNotMated ?? 0,
         MatingconfirmedDate1 ?? null,
         EsitmatedDate ?? null,
@@ -104,6 +103,10 @@ router.post("/", async (req, res) => {
         pregencyMethod ?? null,
         confirmedPergency ?? 0,
         pregencyConfirmedDate ?? null,
+        ACategroy ?? null,
+        matingcol ?? null,
+        PregnancyPreventativeTreatmentDate ?? null,
+        matingcol1 ?? null,
       ]
     );
     res.json({
@@ -119,7 +122,6 @@ router.post("/", async (req, res) => {
         BD,
         LD,
         W,
-        otherproblmenss,
         isHeatedDetectedANDNotMated,
         MatingconfirmedDate1,
         EsitmatedDate,
@@ -132,6 +134,10 @@ router.post("/", async (req, res) => {
         pregencyMethod,
         confirmedPergency,
         pregencyConfirmedDate,
+        ACategroy,
+        matingcol,
+        PregnancyPreventativeTreatmentDate,
+        matingcol1,
       },
     });
   } catch (err) {
@@ -152,7 +158,6 @@ router.put("/:id", async (req, res) => {
       BD,
       LD,
       W,
-      otherproblmenss,
       isHeatedDetectedANDNotMated,
       MatingconfirmedDate1,
       EsitmatedDate,
@@ -165,15 +170,22 @@ router.put("/:id", async (req, res) => {
       pregencyMethod,
       confirmedPergency,
       pregencyConfirmedDate,
+      ACategroy,
+      matingcol,
+      PregnancyPreventativeTreatmentDate,
+      matingcol1,
     } = req.body;
 
     const [result] = await db.execute(
       `UPDATE mating SET
-                species=?, maleTatoo=?, maleChipID=?, femaleChipID=?, entryDate=?, exitDate=?, BD=?, LD=?, W=?, otherproblmenss=?,
+                species=?, maleTatoo=?, maleChipID=?, femaleChipID=?, entryDate=?, exitDate=?, BD=?, LD=?, W=?,
                 isHeatedDetectedANDNotMated=?, MatingconfirmedDate1=?, EsitmatedDate=?, RealBirthDate=?, countconfdatees=?, userId=?,
                 updatedDate=NOW(),MatingconfirmedDate2=?,MatingconfirmedDate3=?,femaleTatoo=?,
       pregencyMethod=?,
-      confirmedPergency=?,pregencyConfirmedDate=?
+      confirmedPergency=?,pregencyConfirmedDate=?, ACategroy=?,
+    matingcol=?,
+    PregnancyPreventativeTreatmentDate=?,
+    matingcol1=?
             WHERE matingID=?`,
       [
         species ?? null,
@@ -185,7 +197,6 @@ router.put("/:id", async (req, res) => {
         BD ?? null,
         LD ?? null,
         W ?? null,
-        otherproblmenss ?? "",
         isHeatedDetectedANDNotMated ?? 0,
         MatingconfirmedDate1 ?? null,
         EsitmatedDate ?? null,
@@ -198,6 +209,10 @@ router.put("/:id", async (req, res) => {
         pregencyMethod ?? null,
         confirmedPergency ?? 0,
         pregencyConfirmedDate ?? null,
+        ACategroy ?? null,
+        matingcol ?? null,
+        PregnancyPreventativeTreatmentDate ?? null,
+        matingcol1 ?? null,
         req.params.id,
       ]
     );
