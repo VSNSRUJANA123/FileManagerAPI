@@ -5,12 +5,18 @@ const db = require("../config/db");
 // READ ALL
 router.get("/", async (req, res) => {
   try {
-    const [rows] = await db.execute("SELECT * FROM mating");
+    const [rows] = await db.execute(
+      "SELECT * FROM mating ORDER BY matingID desc"
+    );
     res.json(rows);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+// "ACategroy": null,
+//     "matingcol": null,
+//     "PregnancyPreventativeTreatmentDate": null,
+//     "matingcol1": null
 
 // READ ONE
 router.get("/:id", async (req, res) => {
