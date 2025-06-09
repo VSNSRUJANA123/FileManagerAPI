@@ -22,7 +22,8 @@ async function getNextAnimalId() {
 }
 router.get("/animalByChip/:chipID", async (req, res) => {
   try {
-    const { chipID } = req.params;
+    // const { chipID } = req.params;
+    const chipID = BigInt(req.params.chipID);
     const [rows] = await db.query(`SELECT * FROM animal WHERE chip = ?`, [
       chipID,
     ]);
