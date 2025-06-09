@@ -20,7 +20,21 @@ async function getNextAnimalId() {
 
   return next;
 }
+router.get("/animalByChip/:chipID", async (req, res) => {
+  try {
+    const { chipID } = req.params;
+    const [rows] = await db.query(
+      `SELECT animalID FROM animal WHERE chip = ?`,
+      [chipID]
+    );
+    if (rows.length === 0)
+      return res.status(404).json({ error: "No animals found for matingID" });
 
+    res.json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 // READ ALL
 router.get("/", async (req, res) => {
   try {
