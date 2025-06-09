@@ -5,7 +5,10 @@ router.get("/animal-by-mating/:matingID", async (req, res) => {
   try {
     const { matingID } = req.params;
     const [rows] = await db.query(
-      "SELECT animalID FROM animal WHERE matingID = ?",
+      `SELECT a.*
+      FROM animal a
+      JOIN mating m ON a.matingID = m.matingID
+      WHERE m.matingID = ?`,
       [matingID]
     );
     if (rows.length === 0)
