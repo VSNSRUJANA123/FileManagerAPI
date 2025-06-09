@@ -1,6 +1,69 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
+router.get("/status/:matingID/:key", async (req, res) => {
+  try {
+    const { matingID, key } = req.params;
+
+    // Only allow specific fields to be queried
+    const allowedKeys = ["BD", "LD", "W"];
+    if (!allowedKeys.includes(key)) {
+      return res.status(400).json({ error: "Invalid key requested" });
+    }
+
+    const [rows] = await db.query(`SELECT ?? FROM mating WHERE matingID = ?`, [
+      key,
+      matingID,
+    ]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Mating record not found" });
+    }
+
+    res.json({ [key]: rows[0][key] });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+router.get("/male/:matingID", async (req, res) => {
+  try {
+    const { matingID } = req.params;
+    const [rows] = await db.query(
+      `
+      SELECT a.* FROM animal a
+      JOIN mating m ON m.maleChipID = a.chip
+      WHERE m.matingID = ?
+    `,
+      [matingID]
+    );
+
+    if (rows.length === 0)
+      return res.status(404).json({ error: "No male animal found" });
+    res.json(rows); // Assuming 1 male per mating
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get("/female/:matingID", async (req, res) => {
+  try {
+    const { matingID } = req.params;
+    const [rows] = await db.query(
+      `
+      SELECT a.* FROM animal a
+      JOIN mating m ON m.femaleChipID = a.chip
+      WHERE m.matingID = ?
+    `,
+      [matingID]
+    );
+
+    if (rows.length === 0)
+      return res.status(404).json({ error: "No female animal found" });
+    res.json(rows); // Assuming 1 female per mating
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 router.get("/animal-by-mating/:matingID", async (req, res) => {
   try {

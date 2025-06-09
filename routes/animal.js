@@ -20,25 +20,31 @@ async function getNextAnimalId() {
 
   return next;
 }
-router.get("/animalByChip/:chipID", async (req, res) => {
-  try {
-    const chipID = BigInt(req.params.chipID); // Convert safely for BIGINT compatibility
 
-    const [rows] = await db.query("SELECT * FROM animal WHERE chip = ?", [
-      chipID,
-    ]);
+// router.get("/animalByChip/:chipID", async (req, res) => {
+//   try {
+//     const { chipID } = req.params;
 
-    if (rows.length === 0) {
-      return res
-        .status(404)
-        .json({ error: "No animals found for provided chipID" });
-    }
+//     if (!chipID) {
+//       return res.status(400).json({ error: "chipID is required" });
+//     }
 
-    res.json(rows);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+//     const [rows] = await db.query("SELECT * FROM animal WHERE chip = ?", [
+//       chipID,
+//     ]);
+
+//     if (rows.length === 0) {
+//       return res
+//         .status(404)
+//         .json({ error: "No animals found for this chipID" });
+//     }
+
+//     res.json(rows);
+//   } catch (err) {
+//     console.error("DB Error:", err);
+//     res.status(500).json({ error: err.message });
+//   }
+// });
 
 // READ ALL
 router.get("/", async (req, res) => {
